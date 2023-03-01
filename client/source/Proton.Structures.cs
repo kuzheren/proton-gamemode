@@ -23,12 +23,14 @@ namespace Proton.Structures
     {
         public string serverVersion;
         public string gameVersion;
+        public string serverName;
 
         public ConnectionRequestAccepted() {}
-        public ConnectionRequestAccepted(string serverVersion, string gameVersion)
+        public ConnectionRequestAccepted(string serverVersion, string gameVersion, string serverName)
         {
             this.serverVersion = serverVersion;
             this.gameVersion = gameVersion;
+            this.serverName = serverName;
         }
     }
     public class AuthKey

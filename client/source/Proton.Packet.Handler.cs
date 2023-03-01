@@ -41,10 +41,10 @@ namespace Proton.Packet.Handler
         {
             byte packetID = packet.Read<byte>();
 
-            if (packetID != (byte) 6)
-            {
-                Debug.Log($"New packet: {packetID}");
-            }
+            //if (packetID != (byte) 6)
+            //{
+            //    Debug.Log($"New packet: {packetID}");
+            //}
 
             if (packetID == ProtonPacketID.AUTH_KEY)
             {
@@ -69,7 +69,7 @@ namespace Proton.Packet.Handler
                 ProtonPacketDeserializer connectionRequestAcceptedData = new ProtonPacketDeserializer(packet, typeof(ConnectionRequestAccepted));
                 ConnectionRequestAccepted connectionRequestAcceptedStructure = (ConnectionRequestAccepted) connectionRequestAcceptedData.structure;
 
-                ProtonCallbacksManager.InvokeCallback("OnConnected", new object[] {connectionRequestAcceptedStructure.serverVersion, connectionRequestAcceptedStructure.gameVersion});
+                ProtonCallbacksManager.InvokeCallback("OnConnected", new object[] {connectionRequestAcceptedStructure.serverVersion, connectionRequestAcceptedStructure.gameVersion, connectionRequestAcceptedStructure.serverName});
             }
             else if (packetID == ProtonPacketID.PLAYER_CLASS_INFO)
             {
