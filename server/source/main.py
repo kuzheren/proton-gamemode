@@ -1,4 +1,4 @@
-import socket, time, traceback, gamemode
+import socket, time, traceback, importlib.util, sys
 from threading import Thread
 
 from protonstream import *
@@ -8,6 +8,15 @@ from packetserialization import *
 from structures import *
 from utils import *
 from networkdictionary import *
+
+spec = importlib.util.spec_from_file_location("gamemode", "gamemode.py")
+gamemode = importlib.util.module_from_spec(spec)
+try:
+    spec.loader.exec_module(gamemode)
+except FileNotFoundError:
+    logError("Gamemode file not found!")
+    input("Press any key to quit...\n")
+    sys.exit()
 
 class Room:
     def __init__(self):
@@ -216,7 +225,11 @@ class Player:
             message = chatMessageInfo.chatMessage.value
 
             if message[0] == "/":
-                gamemode.OnChatCommand(self, message[1:])
+                fullCommandsText = message[1:]
+                arguments = fullCommandsText.split()
+                argumentsString = ' '.join(arguments[1:])
+                argumentsList = argumentsString.split()
+                gamemode.OnChatCommand(self, arguments[0], argumentsString, argumentsList)
                 return
 
             gamemode.OnChatMessage(self, message)

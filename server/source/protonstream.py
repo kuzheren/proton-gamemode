@@ -1,6 +1,5 @@
 import struct
 from utils import constrain
-from customtypes import *
 from enums import *
 from networkvalue import *
 from networkdictionary import *
@@ -69,17 +68,6 @@ class ProtonStream:
     def writeBool(self, value):
         self.writeByte(1 if value else 0)
 
-    def writeVector3(self, value):
-        self.writeFloat(value.x)
-        self.writeFloat(value.y)
-        self.writeFloat(value.z)
-
-    def writeQuaternion(self, value):
-        self.writeFloat(value.x)
-        self.writeFloat(value.y)
-        self.writeFloat(value.z)
-        self.writeFloat(value.w)
-
     def writeBytearray(self, values):
         values = list(values)
         self.writeUInt32(len(values))
@@ -135,12 +123,6 @@ class ProtonStream:
     def readBool(self):
         return self.readByte() == 1
 
-    def readVector3(self):
-        return Vector3(self.readFloat(), self.readFloat(), self.readFloat())
-
-    def readQuaternion(self):
-        return Quaternion(self.readFloat(), self.readFloat(), self.readFloat(), self.readFloat())
-
     def readBytearray(self):
         length = self.readUInt32()
         return list(self.readBytes(length))
@@ -166,10 +148,6 @@ class ProtonStream:
             self.writeFloat(value)
         elif valueType == STRING:
             self.writeString(value)
-        elif valueType == VECTOR3:
-            self.writeVector3(value)
-        elif valueType == QUATERNION:
-            self.writeQuaternion(value)
         elif valueType == BYTEARRAY:
             self.writeBytearray(value)
 
@@ -193,10 +171,6 @@ class ProtonStream:
             value = self.readFloat()
         elif valueType == STRING:
             value = self.readString()
-        elif valueType == VECTOR3:
-            value = self.readVector3()
-        elif valueType == QUATERNION:
-            value = self.readQuaternion()
         elif valueType == BYTEARRAY:
             value = self.readBytearray()
 

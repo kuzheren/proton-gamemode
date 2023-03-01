@@ -53,7 +53,7 @@ def OnChatMessage(player, message):
     formattedMessage = f"{player.nickname}: {message}"
     player.currentRoom.sendDataToAllPlayers("sendChatMessage", formattedMessage)
 
-def OnChatCommand(player, command):
+def OnChatCommand(player, command, argumentsLine, argumentsArray):
     pass
 
 ###########################################
@@ -67,8 +67,11 @@ def GetPlayerProperty(player, propertyName):
         return None
     return player.properties[propertyName]
 
-def AddChatMessage(player, message):
+def SendChatMessage(player, message):
     player.sendChatMessage(message)
+
+def SendGlobalChatMessage(message):
+    server.room.sendDataToAllPlayers("sendChatMessage", message)
 
 def KickPlayer(player, reason):
     if player.currentRoom == None:
@@ -83,4 +86,4 @@ def SendRPC(player, rpcName, values):
 # custom gamemode
 
 def HelloWorld(player):
-    AddChatMessage(player, "Hello!")
+    SendChatMessage(player, "Hello!")

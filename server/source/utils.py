@@ -4,7 +4,7 @@ def log(text):
     print("[Server]:", text)
 
 def logError(text):
-    print("\033[91m[Server Error]:\033[93m", text)
+    print("\033[91m[Server Error]:\033[0m", text)
 
 def logWarning(text):
     print("\033[93m[Server Warning]:\033[0m", text)
