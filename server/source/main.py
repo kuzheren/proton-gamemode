@@ -2,7 +2,6 @@ import socket, time, traceback, importlib.util, sys
 from threading import Thread
 
 from protonstream import *
-from config import *
 from enums import *
 from packetserialization import *
 from structures import *
@@ -15,6 +14,15 @@ try:
     spec.loader.exec_module(gamemode)
 except FileNotFoundError:
     logError("Gamemode file not found!")
+    input("Press any key to quit...\n")
+    sys.exit()
+
+spec = importlib.util.spec_from_file_location("config", "config.py")
+config = importlib.util.module_from_spec(spec)
+try:
+    spec.loader.exec_module(config)
+except FileNotFoundError:
+    logError("Config file not found!")
     input("Press any key to quit...\n")
     sys.exit()
 
@@ -276,7 +284,7 @@ class Player:
         self.sendProtonStream(PS)
 
     def sendConnectionRequestAcceptedPacket(self):
-        connectionAcceptedStructure = ConnectionRequestAccepted(VERSION, GAME_VERSION)
+        connectionAcceptedStructure = ConnectionRequestAccepted(config.VERSION, config.GAME_VERSION, config.SERVER_NAME)
         connectionAcceptedSerializer = Serializer(CONNECTION_REQUEST_ACCEPTED, connectionAcceptedStructure)
         self.sendPacket(connectionAcceptedSerializer.protonStream)
 
@@ -446,13 +454,13 @@ class Server:
         room.server = self
         room.customRoomParameters = NetworkDictionary()
         room.mapName = "Game"
-        room.maxPlayers = MAX_PLAYERS
+        room.maxPlayers = config.MAX_PLAYERS
         room.password = ""
         room.isOpen = True
         room.isVisible = True
         generatedRoomCode = generateRoomCode()
         room.joinCode = generatedRoomCode
-        room.name = f"Donbass{PORT}"
+        room.name = f"Room {config.SERVER_NAME}"
         room.start()
         return room
 
@@ -470,11 +478,11 @@ class Server:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind(self.address)
         gamemode.start(self)
-        self.socket.listen(MAX_PLAYERS)
+        self.socket.listen(config.MAX_PLAYERS)
 
         Thread(target=self.listenForConnections).start()
 
-        log(f"\033[92mProton Gamemode Server\033[0m version {VERSION} started! Address: {self.address}")
+        log(f"\033[92mProton Gamemode Server\033[0m version {config.VERSION} started! Address: {self.address}")
 
     def disconnectPlayer(self, player, reason):
         if player == None:
@@ -520,4 +528,4 @@ class Server:
 
 if __name__ == "__main__":
     server = Server()
-    server.start(IP, PORT)
+    server.start(config.IP, config.PORT)

@@ -10,9 +10,10 @@ class ConnectionRequest:
         self.authKeyResponse = NetworkValue(STRING, authKeyResponse)
 
 class ConnectionRequestAccepted:
-    def __init__(self, serverVersion, gameVersion):
+    def __init__(self, serverVersion=None, gameVersion=None, serverName=None):
         self.streamZone = NetworkValue(STRING, serverVersion)
         self.gameVersion = NetworkValue(STRING, gameVersion)
+        self.serverName = NetworkValue(STRING, serverName)
 
 class AuthKey:
     def __init__(self, authKey=None):
