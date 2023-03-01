@@ -11,7 +11,7 @@ namespace Proton.Stream
     public class ProtonStream
     {
         public List<byte> Bytes = new List<byte>();
-        public short ReadOffset = 0;
+        public int ReadOffset = 0;
 
         public void WriteByte(byte value)
         {
@@ -90,6 +90,11 @@ namespace Proton.Stream
             WriteFloat(value.y);
             WriteFloat(value.z);
         }
+        public void WriteVector2(Vector2 value)
+        {
+            WriteFloat(value.x);
+            WriteFloat(value.y);
+        }
         public void WriteQuaternion(Quaternion value)
         {
             WriteFloat(value[0]);
@@ -148,6 +153,10 @@ namespace Proton.Stream
             else if (typeof(T) == typeof(byte[]))
             {
                 return (T)(object)ReadBytearray();
+            }
+            else if (typeof(T) == typeof(Vector2))
+            {
+                return (T)(object)ReadVector2();
             }
             else
             {
@@ -233,6 +242,10 @@ namespace Proton.Stream
         {
             return new Vector3(ReadFloat(), ReadFloat(), ReadFloat());
         }
+        public Vector2 ReadVector2()
+        {
+            return new Vector2(ReadFloat(), ReadFloat());
+        }
         public Quaternion ReadQuaternion()
         {
             Quaternion quaternion = new Quaternion();
@@ -298,6 +311,10 @@ namespace Proton.Stream
             {
                 WriteBytearray((byte[]) value);
             }
+            else if (valueType == ProtonPacketID.VECTOR2)
+            {
+                WriteVector2((Vector2) value);
+            }
         }
         public NetworkValue ReadNetworkValue()
         {
@@ -347,6 +364,10 @@ namespace Proton.Stream
             else if (valueType == ProtonPacketID.BYTEARRAY)
             {
                 value = Read<byte[]>();
+            }
+            else if (valueType == ProtonPacketID.VECTOR2)
+            {
+                value = Read<Vector2>();
             }
 
             return new NetworkValue(valueType, value);

@@ -68,6 +68,7 @@ namespace Proton
                 Debug.LogWarning("Ошибка подключения к комнате! Вы уже находитесь в комнате!");
                 return;
             }
+            ProtonGlobalStates.ConnectionState = ConnectionStates.JoiningToRoom;
             ProtonPacketHandler.SendJoinRoom(roomName, password);
         }
         public static void UpdateLocalPlayerInfo()
@@ -114,7 +115,7 @@ namespace Proton
                 return;
             }
 
-            if (!IsConnected())
+            if (IsConnected() == false)
             {
                 Debug.LogError("Для отправки RPC нужно подключиться к серверу!");
                 return;
@@ -125,7 +126,7 @@ namespace Proton
 
         public static bool IsConnected()
         {
-            return !(ProtonGlobalStates.ConnectionState == ConnectionStates.Disconnected || ProtonGlobalStates.ConnectionState == ConnectionStates.AuthKeyRequest);
+            return !(ProtonGlobalStates.ConnectionState == ConnectionStates.Disconnected || ProtonGlobalStates.ConnectionState == ConnectionStates.AuthKeyRequest || ProtonNetwork.ProtonTCPClient == null);
         }
     }
     public class Room

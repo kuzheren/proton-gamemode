@@ -124,6 +124,7 @@ namespace Proton.Packet.Handler
                 cachedPlayers = new List<Player>();
                 
                 ProtonEngine.CurrentRoom = joinedRoom;
+                ProtonGlobalStates.ConnectionState = ConnectionStates.JoinedToRoom;
                 ProtonCallbacksManager.InvokeCallback("OnJoinRoom", new object[] {joinedRoom});
             }
             else if (packetID == ProtonPacketID.REMOVE_PLAYER_CLASS_INFO)

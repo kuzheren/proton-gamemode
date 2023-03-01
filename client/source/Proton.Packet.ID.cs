@@ -36,6 +36,7 @@ namespace Proton.Packet.ID
         public static readonly byte ARRAY =                                    10;
         public static readonly byte DICTIONARY =                               11;
         public static readonly byte BYTEARRAY =                                12;
+        public static readonly byte VECTOR2 =                                  13;
     }
     public static class RPCTarget
     {

@@ -82,6 +82,10 @@ namespace Proton.Packet.Serialization
                 {
                     resultProtonStream.WriteBytearray((byte[]) field.GetValue(targetStructure));
                 }
+                else if (field.FieldType == typeof(Vector2))
+                {
+                    resultProtonStream.WriteVector2((Vector2) field.GetValue(targetStructure));
+                }
             }
             return resultProtonStream;
         }
@@ -152,6 +156,10 @@ namespace Proton.Packet.Serialization
                 else if (field.FieldType == typeof(byte[]))
                 {
                     targetField.SetValue(newClass, packet.ReadBytearray());
+                }
+                else if (field.FieldType == typeof(Vector2))
+                {
+                    targetField.SetValue(newClass, packet.ReadVector2());
                 }
             }
             return newClass;
@@ -363,6 +371,10 @@ namespace Proton.Packet.Serialization
             {
                 return typeof(byte[]);
             }
+            else if (typeID == ProtonPacketID.VECTOR2)
+            {
+                return typeof(Vector2);
+            }
             return null;
         }
         public static byte GetTypeID(Type type)
@@ -412,6 +424,10 @@ namespace Proton.Packet.Serialization
                 return ProtonPacketID.DICTIONARY;
             }
             else if (type == typeof(byte[]))
+            {
+                return ProtonPacketID.BYTEARRAY;
+            }
+            else if (type == typeof(Vector2))
             {
                 return ProtonPacketID.BYTEARRAY;
             }
