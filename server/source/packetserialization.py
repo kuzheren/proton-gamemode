@@ -41,6 +41,8 @@ class Serializer:
                 self.protonStream.writeNetworkDictionary(value)
             elif type == VECTOR3:
                 self.protonStream.writeVector3(value)
+            elif type == VECTOR2:
+                self.protonStream.writeVector2(value)
             elif type == QUATERNION:
                 self.protonStream.writeQuaternion(value)
             elif type == BYTEARRAY:
@@ -82,6 +84,8 @@ class Deserializer:
                 setattr(structure, key, NetworkValue(type, dictionary))
             elif type == VECTOR3:
                 setattr(structure, key, NetworkValue(type, PS.readVector3()))
+            elif type == VECTOR2:
+                setattr(structure, key, NetworkValue(type, PS.readVector2()))
             elif type == QUATERNION:
                 setattr(structure, key, NetworkValue(type, PS.readQuaternion()))
             elif type == BYTEARRAY:

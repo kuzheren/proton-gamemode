@@ -3,6 +3,7 @@ from utils import constrain
 from enums import *
 from networkvalue import *
 from networkdictionary import *
+from customtypes import *
 
 class ProtonStream:
     def __init__(self):
@@ -73,6 +74,21 @@ class ProtonStream:
         self.writeUInt32(len(values))
         self.writeBytes(values)
 
+    def writeVector3(self, value):
+        self.writeFloat(value.x)
+        self.writeFloat(value.y)
+        self.writeFloat(value.z)
+
+    def writeVector2(self, value):
+        self.writeFloat(value.x)
+        self.writeFloat(value.y)
+
+    def writeQuaternion(self, value):
+        self.writeFloat(value.x)
+        self.writeFloat(value.y)
+        self.writeFloat(value.z)
+        self.writeFloat(value.w)
+
     def readByte(self):
         self.readOffset += 1
         return self.bytes[self.readOffset - 1]
@@ -127,6 +143,15 @@ class ProtonStream:
         length = self.readUInt32()
         return list(self.readBytes(length))
 
+    def readVector3(self):
+        return Vector3(self.readFloat(), self.readFloat(), self.readFloat())
+
+    def readVector2(self):
+        return Vector2(self.readFloat(), self.readFloat())
+
+    def readQuaternion(self):
+        return Quaternion(self.readFloat(), self.readFloat(), self.readFloat())
+
     def writeNetworkValue(self, networkValue):
         valueType = networkValue.type
         value = networkValue.value
@@ -150,6 +175,12 @@ class ProtonStream:
             self.writeString(value)
         elif valueType == BYTEARRAY:
             self.writeBytearray(value)
+        elif valueType == VECTOR3:
+            self.writeVector3(value)
+        elif valueType == VECTOR2:
+            self.writeVector2(value)
+        elif valueType == QUATERNION:
+            self.writeQuaternion(value)
 
     def readNetworkValue(self):
         valueType = self.readByte()
@@ -173,6 +204,12 @@ class ProtonStream:
             value = self.readString()
         elif valueType == BYTEARRAY:
             value = self.readBytearray()
+        elif valueType == VECTOR3:
+            value = self.readVector3()
+        elif valueType == VECTOR2:
+            value = self.readVector2()
+        elif valueType == QUATERNION:
+            value = self.readQuaternion()
 
         return NetworkValue(valueType, value)
 

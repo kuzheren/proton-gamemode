@@ -8,21 +8,21 @@ from structures import *
 from utils import *
 from networkdictionary import *
 
-spec = importlib.util.spec_from_file_location("gamemode", "gamemode.py")
-gamemode = importlib.util.module_from_spec(spec)
-try:
-    spec.loader.exec_module(gamemode)
-except FileNotFoundError:
-    logError("Gamemode file not found!")
-    input("Press any key to quit...\n")
-    sys.exit()
-
 spec = importlib.util.spec_from_file_location("config", "config.py")
 config = importlib.util.module_from_spec(spec)
 try:
     spec.loader.exec_module(config)
 except FileNotFoundError:
     logError("Config file not found!")
+    input("Press any key to quit...\n")
+    sys.exit()
+
+spec = importlib.util.spec_from_file_location("gamemode", config.GAMEMODE)
+gamemode = importlib.util.module_from_spec(spec)
+try:
+    spec.loader.exec_module(gamemode)
+except FileNotFoundError:
+    logError("Gamemode file not found!")
     input("Press any key to quit...\n")
     sys.exit()
 
