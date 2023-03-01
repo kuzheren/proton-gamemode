@@ -18,10 +18,10 @@ def start(init):
 
 ###########################################
 
-def RPC_Example(targetID, networkValues, values):
+def RPC_Example(sender, targetID, networkValues, values):
     pass
 
-def OnReceiveRPC(rpcName, targetID, networkValues, values):
+def OnReceiveRPC(sender, rpcName, targetID, networkValues, values):
     pass
 
 ###########################################
