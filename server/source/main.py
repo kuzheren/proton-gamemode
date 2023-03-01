@@ -257,10 +257,10 @@ class Player:
             if targetPlayer != None:
                 targetPlayer.sendRPC(deserializer.RPCName, self.ID, deserializer.networkValues)
 
-        gamemode.OnReceiveRPC(deserializer.RPCName, deserializer.targetID, deserializer.networkValues, deserializer.values)
+        gamemode.OnReceiveRPC(self, deserializer.RPCName, deserializer.targetID, deserializer.networkValues, deserializer.values)
         if hasattr(gamemode, f"RPC_{deserializer.RPCName}"):
             rpcCallback = getattr(gamemode, f"RPC_{deserializer.RPCName}")
-            rpcCallback(deserializer.targetID, deserializer.networkValues, deserializer.values)
+            rpcCallback(self, deserializer.targetID, deserializer.networkValues, deserializer.values)
 
     #################################################
 
