@@ -425,7 +425,7 @@ class Player:
 
     def sendThread(self):
         while self.active:
-            time.sleep(0.05)
+            time.sleep(1.0 / config.PACKET_TICK_RATE)
             if len(self.packetQueue) == 0:
                 continue
 
