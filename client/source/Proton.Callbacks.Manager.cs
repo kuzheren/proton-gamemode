@@ -34,7 +34,7 @@ namespace Proton.Callbacks.Manager
                     }
                     catch (System.Reflection.TargetParameterCountException)
                     {
-                        throw new System.ArgumentException("Выполняемая коллбэком функция не имеет нужной сигнатуры!");
+                        throw new System.ArgumentException($"Выполняемая коллбэком функция {methodName} не имеет нужной сигнатуры! Количество аргументов: {args.Length}");
                     }
                 }
             }

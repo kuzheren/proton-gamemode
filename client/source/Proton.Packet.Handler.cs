@@ -70,6 +70,7 @@ namespace Proton.Packet.Handler
                 ConnectionRequestAccepted connectionRequestAcceptedStructure = (ConnectionRequestAccepted) connectionRequestAcceptedData.structure;
 
                 ProtonCallbacksManager.InvokeCallback("OnConnected", new object[] {connectionRequestAcceptedStructure.serverVersion, connectionRequestAcceptedStructure.gameVersion, connectionRequestAcceptedStructure.serverName});
+                ProtonGlobalStates.LastPingTime = System.DateTimeOffset.Now.ToUnixTimeSeconds();
             }
             else if (packetID == ProtonPacketID.PLAYER_CLASS_INFO)
             {
